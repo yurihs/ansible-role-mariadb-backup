@@ -1,0 +1,57 @@
+---
+
+- name: "Install MariaDB client"
+  apt:
+    name: mariadb-client
+    state: present
+
+- name: "Copy script"
+  copy:
+    src: mariadb_backup_script
+    dest: /usr/local/bin/mariadb_backup
+    mode: 0755
+
+- name: "Create configuration directory"
+  file:
+    path: "{{ mariadb_backup_config_dir }}"
+    state: directory
+
+- name: "Add managed configs"
+  template:
+    src: mariadb_backup_config.j2
+    dest: "{{ mariadb_backup_config_dir }}/{{ item.name }}.conf"
+    mode: 0600
+  no_log: true
+  when: item.state|default('present') != 'absent'
+  with_items:
+    - "{{ mariadb_backup_list }}"
+
+- name: "Remove managed configs"
+  file:
+    path: "{{ mariadb_backup_config_dir }}/{{ item.name }}.conf"
+    state: absent
+  no_log: true
+  when: item.state|default('present') == 'absent'
+  with_items:
+      - "{{ mariadb_backup_list }}"
+
+- name: Add cron entries
+  cron:
+    name: "mariadb_backup - {{ item.name }}"
+    minute: "{{ item.cron.minute }}"
+    hour: "{{ item.cron.hour }}"
+    day: "{{ item.cron.day }}"
+    month: "{{ item.cron.month }}"
+    weekday: "{{ item.cron.weekday }}"
+    job: "/usr/local/bin/mariadb_backup {{ mariadb_backup_config_dir }}/{{ item.name }}.conf"
+  when: item.state|default('present') != 'absent' and item.cron is defined
+  with_items:
+      - "{{ mariadb_backup_list }}"
+
+- name: Remove cron entries
+  cron:
+    name: "mariadb_backup - {{ item.name }}"
+    state: absent
+  when: item.state|default('present') == 'absent'
+  with_items:
+      - "{{ mariadb_backup_list }}"

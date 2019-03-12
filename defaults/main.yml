@@ -1,0 +1,18 @@
+---
+
+mariadb_backup_config_dir: /etc/mariadb_backup
+
+mariadb_backup_default_output_dir: /srv/mariadb_backup
+mariadb_backup_default_date_format: "%Y-%m-%d_%H-%M"
+
+mariadb_backup_list:
+  - name: default
+    db_username: root
+    db_hostname: localhost
+    db_port: 5432
+    cron:
+      minute: '0'
+      hour: '*'
+      day: '*'
+      month: '*'
+      weekday: '*'

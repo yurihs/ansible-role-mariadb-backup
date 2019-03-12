@@ -1,0 +1,11 @@
+
+DB_USERNAME="{{ item.db_username }}"
+{% if item.db_password is defined %}
+export MYSQL_PWD="{{ item.db_password }}"
+{% endif %}
+
+DB_HOSTNAME="{{ item.db_hostname }}"
+DB_PORT="{{ item.db_port }}"
+
+OUTPUT_DIR_BASE="{{ item.output_dir | default(mariadb_backup_default_output_dir + '/' + item.name) }}"
+DATE_FORMAT="{{ item.date_format | default(mariadb_backup_default_date_format) }}"
