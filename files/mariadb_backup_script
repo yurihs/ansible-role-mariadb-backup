@@ -11,7 +11,7 @@ list_databases() {
 backup_databases() {
 	for database in $(list_databases); do
 		local filename="${database}.sql.gz"
-		if (umask 077 && mysqldump --single-transaction --quick --lock-tables=false -h "$DB_HOSTNAME" -u "$DB_USERNAME" -P "$DB_PORT" | gzip > "${filename}.in_progress"); then
+		if (umask 077 && mysqldump --single-transaction --quick --lock-tables=false -h "$DB_HOSTNAME" -u "$DB_USERNAME" -P "$DB_PORT" "$database" | gzip > "${filename}.in_progress"); then
 			mv "${filename}.in_progress" "$filename"
 		else
 			return 1
