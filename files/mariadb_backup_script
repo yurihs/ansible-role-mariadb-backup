@@ -9,14 +9,19 @@ list_databases() {
 
 
 backup_databases() {
-	for database in $(list_databases); do
+	local databases=$(list_databases)
+	if [[ -z "${databases// }" ]]; then
+		echo "Found no databases to back up. Exiting."
+		exit 1
+	fi
+	while read -r database; do
 		local filename="${database}.sql.gz"
 		if (umask 077 && mysqldump --single-transaction --quick --lock-tables=false -h "$DB_HOSTNAME" -u "$DB_USERNAME" -P "$DB_PORT" "$database" | gzip > "${filename}.in_progress"); then
 			mv "${filename}.in_progress" "$filename"
 		else
 			return 1
 		fi;
-	done
+	done <<< "$databases"
 	return 0
 }
 
