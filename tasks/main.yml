@@ -44,6 +44,7 @@
     month: "{{ item.cron.month }}"
     weekday: "{{ item.cron.weekday }}"
     job: "/usr/local/bin/mariadb_backup {{ mariadb_backup_config_dir }}/{{ item.name }}.conf"
+  no_log: true
   when: item.state|default('present') != 'absent' and item.cron is defined
   with_items:
       - "{{ mariadb_backup_list }}"
@@ -52,6 +53,7 @@
   cron:
     name: "mariadb_backup - {{ item.name }}"
     state: absent
+  no_log: true
   when: item.state|default('present') == 'absent'
   with_items:
       - "{{ mariadb_backup_list }}"
