@@ -7,7 +7,7 @@
 
 ## What is backed up?
 
-- All readable databases, to separate files. `mysqldump --single-transaction --quick --lock-tables=false database`
+- All readable non-system databases, to separate files. Command used: `mysqldump --single-transaction --quick --lock-tables=false $database`
 
 
 ## Role variables (default values)
