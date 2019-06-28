@@ -3,8 +3,11 @@
 dependencies: []
 
 galaxy_info:
+  role_name: mariadb_backup
   author: yurihs
   description: Backup MariaDB databases
+  license: MIT
+  min_ansible_version: 2.4
   platforms:
     - name: Debian
       versions:
