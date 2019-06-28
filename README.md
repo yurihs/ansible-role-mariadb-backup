@@ -1,5 +1,7 @@
 # Ansible Role: MariaDB Backups
 
+[![Ansible Galaxy Badge](https://img.shields.io/ansible/role/41598.svg)](https://galaxy.ansible.com/yurihs/mariadb_backup)
+
 - Installs a script to back up MariaDB databases.
 - Supports backing up multiple hosts.
 - Manages cron entries for regular execution.
