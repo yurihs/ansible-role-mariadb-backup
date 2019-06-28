@@ -11,7 +11,12 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        - all
+        - jessie
+        - stretch
+        - buster
+        - sid
     - name: Ubuntu
       versions:
-        - all
+        - xenial
+        - bionic
+        - cosmic
